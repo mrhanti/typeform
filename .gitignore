@@ -4,4 +4,5 @@ dist
 dist/**/*
 .tmp
 .tmp/**/*
-.sass-cache
+.sass-cache/*
+
