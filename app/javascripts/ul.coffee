@@ -10,17 +10,18 @@ define (require) ->
         for item in $children
           @children.push(new LI(item))
 
+      @firstChild = @children[0]
+      @lastChild = @children[@children.length - 1]
+
     offset: =>
       {
         height: @el.offsetHeight,
         width: @el.offsetWidth
       }
 
-    childrenOffsets: =>
-      offsets = []
-      for child in @children
-        offsets.push(child.offset())
-      offsets
-
     length: =>
       @children.length
+
+    setMargin: (top, bottom=0) =>
+      @el.style.marginTop = "#{top}px"
+      @el.style.marginBottom = "#{bottom}px"

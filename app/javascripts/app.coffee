@@ -16,7 +16,7 @@ define (require) ->
     constructor: (ul, viewport) ->
       console.log "App#constructor", ul, viewport
       ul = new UL(ul)
-      viewport = new Viewport(viewport)
+      viewport = new Viewport(viewport, ul)
 
       window.ul = ul
       window.viewport = viewport

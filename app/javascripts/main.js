@@ -2,11 +2,16 @@ require.config({
   paths: {
     jquery: '../vendor/jquery/jquery',
     bootstrap: '../vendor/bootstrap/bootstrap',
+    resize: 'vendor/jquery.ba-resize',
     cs: 'cs',
     CoffeeScript: 'coffee-script'
   },
   shim: {
     bootstrap: {
+      deps: ['jquery'],
+      exports: 'jquery'
+    },
+    resize: {
       deps: ['jquery'],
       exports: 'jquery'
     }

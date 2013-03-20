@@ -3,7 +3,13 @@ define ->
 
     constructor: (@el) ->
       # ...
+      if document and document.defaultView
+        t = @el.querySelector('.question')
 
+        style = if t.style.marginTop then t.style else document.defaultView
+            .getComputedStyle(t, null)
+
+        @marginTop = parseInt(style.marginTop)
 
       $(".viewport").scroll (e) =>
         offset = @offset()
@@ -17,8 +23,15 @@ define ->
 
     offset: =>
       {
-        height: @el.offsetHeight,
+        height: @el.offsetHeight + @marginTop,
         width: @el.offsetWidth,
         top: @el.offsetTop,
         left: @el.offsetLeft
       }
+
+    scrollTo: =>
+      $(".viewport").animate
+        scrollTop: @offset().top + @marginTop
+      , 300
+
+
