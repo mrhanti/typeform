@@ -1,37 +1,38 @@
 define ->
   class LI
 
-    constructor: (@el) ->
-      # ...
+    constructor: (@index, @el) ->
+      @id = @el.dataset.id
+      @$el = $ @el
+
       if document and document.defaultView
         t = @el.querySelector('.question')
 
         style = if t.style.marginTop then t.style else document.defaultView
-            .getComputedStyle(t, null)
+          .getComputedStyle(t, null)
 
         @marginTop = parseInt(style.marginTop)
 
-      $(".viewport").scroll (e) =>
-        offset = @offset()
-        scrollTop = offset.top
-        scrollHeight = scrollTop + offset.height
-        if e.target.scrollTop >= scrollTop and e.target.scrollTop < scrollHeight
-          $(@el).addClass("open") unless $(@el).hasClass("open")
-        else
-          $(@el).removeClass("open") if $(@el).hasClass("open")
+    toggleSelect: (target) =>
+      area = @area()
+      scrollTop = area.top
+      scrollHeight = scrollTop + area.height + @marginTop
 
+      seletClassName = "open"
+      if target.scrollTop >= scrollTop and target.scrollTop < scrollHeight
+        @$el.addClass(seletClassName) unless @$el.hasClass(seletClassName)
+      else
+        @$el.removeClass(seletClassName) if @$el.hasClass(seletClassName)
 
-    offset: =>
+    area: =>
       {
-        height: @el.offsetHeight + @marginTop,
+        height: @el.offsetHeight,
         width: @el.offsetWidth,
         top: @el.offsetTop,
         left: @el.offsetLeft
       }
 
-    scrollTo: =>
+    scrollTo: (scroll) =>
       $(".viewport").animate
-        scrollTop: @offset().top + @marginTop
+        scrollTop: @area().top + 144
       , 300
-
-

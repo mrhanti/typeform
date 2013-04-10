@@ -7,21 +7,41 @@ define (require) ->
       $children = @el.querySelectorAll("li")
       @children = []
       if $children
-        for item in $children
-          @children.push(new LI(item))
+        for item, i in $children
+          @children.push(new LI(i, item))
 
       @firstChild = @children[0]
-      @lastChild = @children[@children.length - 1]
+      @lastChild = @children[@children.length-1]
+      @length = @children.length
+      @
 
-    offset: =>
+    area: =>
       {
         height: @el.offsetHeight,
         width: @el.offsetWidth
       }
 
-    length: =>
-      @children.length
+    setMargin: (top, bottom) =>
+      @el.style.marginTop = "#{top or 0}px"
+      @el.style.marginBottom = "#{(bottom*1.5) or 0}px"
 
-    setMargin: (top, bottom=0) =>
-      @el.style.marginTop = "#{top}px"
-      @el.style.marginBottom = "#{bottom}px"
+    dataset: (opts=null) =>
+      if opts?
+        for k, v of opts
+          @el.dataset[k] = v
+      else
+        opts = {}
+        for k, v of @el.dataset
+          opts[k] = parseFloat(v)
+      opts
+
+    scrollTo: (pos) =>
+      @children[pos].scrollTo()
+
+    childrenOffsets: =>
+      for child in @children
+        console.log child.area()
+
+
+
+

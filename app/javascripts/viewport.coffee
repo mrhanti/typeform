@@ -6,22 +6,18 @@ define (require) ->
   class Viewport
 
     constructor: (@el, @ul) ->
-      # ...
       @$el = $ @el
 
-      @$el.on "resize", (e) =>
-        difference = @area().height - @ul.firstChild.offset().height
-        difference = difference / 2
+      @$el.on "resize", @resize
+      @$el.scroll (e) =>
+        for child in @ul.children
+          child.toggleSelect(e.target)
+        false
 
-        marginTop = @ul.firstChild.marginTop + difference
 
-        difference = @area().height - @ul.lastChild.offset().height
-        difference = difference / 2
-
-        marginBottom = @ul.firstChild.marginTop + difference
-        @ul.setMargin(marginTop, marginBottom)
-
-      @$el.trigger "resize"
+      @current = @ul.firstChild
+      # ..
+      @resize()
 
     area: =>
       {
@@ -31,3 +27,36 @@ define (require) ->
 
     scrollTop: (scroll) =>
       @el.scrollTop = scroll
+
+    resize: =>
+      difference = @area().height - @ul.firstChild.area().height
+      difference = difference / 2
+      marginTop = difference
+
+      difference = @area().height - @ul.lastChild.area().height
+      difference = difference / 2
+      marginBottom = difference
+
+      @ul.setMargin(marginTop, marginBottom)
+
+      false
+
+    next: =>
+      _current = @ul.children[@current.index+1]
+      console.log _current, @current
+      # return unless _current
+
+      # @$el.animate
+      #   scrollTop: @current.area().top
+      # , 300, => @current = _current
+
+    previous: =>
+      _current = @ul.children[@current.index-1]
+      console.log _current, @current
+      # return unless _current
+
+      # @$el.animate
+      #   scrollTop: @current.area().top
+      # , 300, => @current = _current
+
+
